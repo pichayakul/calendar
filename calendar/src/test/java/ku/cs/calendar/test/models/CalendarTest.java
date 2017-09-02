@@ -1,7 +1,11 @@
 package ku.cs.calendar.test.models;
 
 import java.util.ArrayList;
+
 import ku.cs.calendar.test.MainController;
+
+
+
 
 public class CalendarTest {
 
@@ -24,7 +28,27 @@ public class CalendarTest {
 	}
 	public void addAppointment(String date, String time,String detail, String title)
 	{
-		appointmentList.add(new AppointmentTest(date,time, detail, title,this.controller));
+//		System.out.println(controller);
+		appointmentList.add(new AppointmentTest(date, time, detail, title, controller));
+		if (this.controller.getDatabase()!=null)
+		{
+			this.controller.getDatabase().addDatabase(date, time, title, detail);
+		}
+		
+	}
+	public void editAppointment(AppointmentTest appointment ,String time,String detail, String title,String titleOld)
+	{
+		appointment.setTime(time);
+		appointment.setDetail(detail);
+		appointment.setTitle(title);
+		this.controller.getDatabase().editDatabase(time, title, detail,titleOld);
+		
+	}
+	public void deleteAppointment(int index)
+	{
+		AppointmentTest a = this.appointmentList.remove(index);
+		
+		this.controller.getDatabase().deleteDatabase(a.getTitle());
 	}
 	public ArrayList<AppointmentTest> getAppointmentList()
 	{
@@ -42,4 +66,5 @@ public class CalendarTest {
 		}
 		return false;
 	}
+	
 }

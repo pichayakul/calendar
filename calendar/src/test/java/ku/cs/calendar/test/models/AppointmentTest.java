@@ -20,7 +20,7 @@ public class AppointmentTest {
 	String time;
 	Timer timer;
 	MainController controller;
-	@SuppressWarnings("deprecation")
+//	@SuppressWarnings("deprecation")
 	public AppointmentTest(String date,String time,String detail,String title,MainController controller) {
 		this.date = date;
 		this.time = time;
@@ -42,7 +42,7 @@ public class AppointmentTest {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				JOptionPane.showMessageDialog(null, "Title : "+getTitle()+"\n"+"You have an appointment."+"\nDetail : \n"+getDetail());
+				JOptionPane.showMessageDialog(null, "Title : "+getTitle()+"\n"+"You have an appointment."+"\nDetail : \n    "+getDetail());
 			}
 		}, appointmentTime);
 	}

@@ -13,7 +13,6 @@ public class InformationTest {
 		
 		Date date = new Date();
 		String dateForm = date.getDay()+" "+date.getMonth()+" "+(date.getYear()+1900);
-//		System.out.println(dateForm);
 		test.getCalendar().addAppointment(dateForm, "20:00", "my name is KU", "Introduction");
 		
 		assertEquals("20:00", test.getCalendar().getAppointmentList().get(0).getTime());

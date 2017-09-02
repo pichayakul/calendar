@@ -45,6 +45,7 @@ public class AppointmentView {
 	public ArrayList<Appointment> appointmentList;
 	public int index;
 	public JLabel lblAppointmentList;
+	public int selectedButtonIndex;
 	public AppointmentView(MainController controller) {
 		this.controller = controller;
 		initialize();
@@ -52,6 +53,10 @@ public class AppointmentView {
 	public void display(boolean s)
 	{
 		frame.setVisible(s);
+	}
+	public JFrame getFrame()
+	{
+		return this.frame;
 	}
 	private void initialize() {
 		frame = new JFrame();
@@ -138,25 +143,30 @@ public class AppointmentView {
 				a = appointmentList.get(i);
 				button = new JButton(a.getTitle()+" -----"+a.getDate());
 				button.setPreferredSize(new Dimension(frame.getWidth(), 40));
+				System.out.println(i);
 				panel_2.add(button);
 			}
 		}
 		scroll = new JScrollPane(panel_2,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_1.add(scroll);
 	}
-	
+	public JPanel getPanel_2()
+	{
+		return this.panel_2;
+	}
 	public void updateUI() {
 		appointmentList = controller.getCalendar().getAppointmentList();
 		Appointment a;
 		Component[] list = panel_2.getComponents();
 		if (appointmentList.size()<=4)
 		{
+			JButton c;
 			for (int i=0;i<4;i++)
 			{
 				if (i < appointmentList.size()) {
 					a = appointmentList.get(i);
 					
-					JButton c = (JButton) list[i];
+					c = (JButton) list[i];
 					c.setText(a.getTitle()+" -----"+a.getDate());
 					c.setEnabled(true);
 					for (ActionListener n : c.getActionListeners())
@@ -177,7 +187,88 @@ public class AppointmentView {
 								{
 									if (controller.getCalendar().getAppointmentList().get(i).getTitle().equals(button.getText().split(" ")[0]))
 									{
-										appointment.remove(i);
+										controller.getYesNoForm().show();
+										selectedButtonIndex = i;
+										controller.getYesNoForm().setSelectedObjectIndex(selectedButtonIndex);
+//										if (controller.getYesNoForm().checkYesNo())
+//										{
+//											controller.getCalendar().deleteAppointment(i);
+//										}
+
+										break;
+									}
+								}
+								updateUI();
+							}
+							else
+							{
+							JButton button = (JButton) e.getSource();
+							getForm(button);
+
+							}
+							
+						}
+					});
+				}
+				
+			}
+			for (int i=0;i<this.getPanel_2().getComponentCount();i++)
+			{
+				System.out.println("CountPanel :"+this.getPanel_2().getComponentCount());
+				System.out.println("CountList :"+appointmentList.size());
+				if (i >= appointmentList.size())
+				{
+					list = panel_2.getComponents();
+					c = (JButton) list[i];
+					c.setText("");
+					c.setEnabled(false);
+					if (getPanel_2().getComponentCount()>4)
+					{
+						getPanel_2().remove(c);
+					}
+				}
+			}
+		}
+		else
+		{
+			JButton c;
+			for (int i=0;i<appointmentList.size();i++)
+			{
+					a = appointmentList.get(i);
+					if (i>=list.length-1)
+					{
+						JButton button = new JButton(a.getTitle()+" -----"+a.getDate());
+						button.setPreferredSize(new Dimension(frame.getWidth(), 40));
+						panel_2.add(button);
+					}
+					list = panel_2.getComponents();
+					c = (JButton) list[i];
+					c.setText(a.getTitle()+" -----"+a.getDate());
+					c.setEnabled(true);
+					for (ActionListener n : c.getActionListeners())
+					{
+						c.removeActionListener(n);
+					}
+					c.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							if (getDelButton().getText().equals("Delete"))
+							{
+								ArrayList<Appointment> appointment = controller.getCalendar().getAppointmentList();
+								
+								JButton button = (JButton) e.getSource();
+								for (int i=0;i<controller.getCalendar().getAppointmentList().size();i++)
+								{
+									if (controller.getCalendar().getAppointmentList().get(i).getTitle().equals(button.getText().split(" ")[0]))
+									{
+										controller.getYesNoForm().show();
+										selectedButtonIndex = i;
+										controller.getYesNoForm().setSelectedObjectIndex(selectedButtonIndex);
+//										if (controller.getYesNoForm().checkYesNo())
+//										{
+//											controller.getCalendar().deleteAppointment(i);
+//										}
 										break;
 									}
 								}
@@ -189,67 +280,24 @@ public class AppointmentView {
 							JButton button = (JButton) e.getSource();
 							getForm(button);
 							}
-							
 						}
 					});
-				}
-				else
+			}
+			for (int i=0;i<this.getPanel_2().getComponentCount();i++)
+			{
+				System.out.println("CountPanel :"+this.getPanel_2().getComponentCount());
+				System.out.println("CountList :"+appointmentList.size());
+				if (i >= appointmentList.size())
 				{
-					JButton c = (JButton) list[i];
+					list = panel_2.getComponents();
+					c = (JButton) list[i];
 					c.setText("");
 					c.setEnabled(false);
+	//				if (getPanel_2().getComponentCount()>4)
+	//				{
+						getPanel_2().remove(c);
+	//				}
 				}
-				
-				
-			}
-		}
-		else
-		{
-			for (int i=0;i<appointmentList.size();i++)
-			{
-				a = appointmentList.get(i);
-				if (i>=list.length)
-				{
-					JButton button = new JButton(a.getTitle()+" -----"+a.getDate());
-					button.setPreferredSize(new Dimension(frame.getWidth(), 40));
-					panel_2.add(button);
-				}
-				list = panel_2.getComponents();
-				JButton c = (JButton) list[i];
-				c.setText(a.getTitle()+" -----"+a.getDate());
-				c.setEnabled(true);
-				for (ActionListener n : c.getActionListeners())
-				{
-					c.removeActionListener(n);
-				}
-				c.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						if (getDelButton().getText().equals("Delete"))
-						{
-							ArrayList<Appointment> appointment = controller.getCalendar().getAppointmentList();
-							
-							JButton button = (JButton) e.getSource();
-							for (int i=0;i<controller.getCalendar().getAppointmentList().size();i++)
-							{
-								if (controller.getCalendar().getAppointmentList().get(i).getTitle().equals(button.getText().split(" ")[0]))
-								{
-									appointment.remove(i);
-									break;
-								}
-							}
-							updateUI();
-							
-						}
-						else
-						{
-						JButton button = (JButton) e.getSource();
-						getForm(button);
-						}
-					}
-				});
-				
 			}
 		}	
 	}
@@ -274,6 +322,7 @@ public class AppointmentView {
 		controller.getFillAppointmentView().showEditBtn();
 		controller.getFillAppointmentView().hideOKBtn();
 		controller.getFillAppointmentView().display();
+		controller.getFillAppointmentView().selectedButtonName(appointment.getTitle());
 		
 	}
 	public int getIndex()

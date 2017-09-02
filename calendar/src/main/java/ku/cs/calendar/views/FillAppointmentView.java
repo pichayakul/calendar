@@ -39,9 +39,10 @@ public class FillAppointmentView {
 	private JTextField titleField;
 	public JPanel panel;
 	public JButton btnEdit;
-	public JButton btnOK;
+	public JButton btnSave;
 	public JComboBox hoursComboBox;
 	public JComboBox minutesComboBox;
+	public String buttonName;
 	public FillAppointmentView(MainController controller) {
 		this.controller = controller;
 		initialize();
@@ -64,6 +65,7 @@ public class FillAppointmentView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
 				ArrayList<Appointment> list = controller.getCalendar().getAppointmentList();
 				int index = controller.appointmentView.getIndex();
 				if (getTitleField().getText().equals(""))
@@ -71,12 +73,14 @@ public class FillAppointmentView {
 					JOptionPane.showMessageDialog(null, "check your time and title");
 				}
 				Appointment appointment = controller.getCalendar().getAppointmentList().get(index);
-				appointment.setDate(controller.getFillAppointmentView().getDateField().getText());
-				appointment.setDetail(controller.getFillAppointmentView().getDetailField().getText());
+				String detail = controller.getFillAppointmentView().getDetailField().getText();
 				String hours = controller.getFillAppointmentView().getHoursComboBox().getSelectedItem()+"";
 				String minutes = controller.getFillAppointmentView().getMinutesComboBox().getSelectedItem()+"";
-				appointment.setTime(hours+":"+minutes);
-				appointment.setTitle(controller.getFillAppointmentView().getTitleField().getText());
+				String time =hours+":"+minutes;
+				String titleOld = getButtonName();
+				String title = controller.getFillAppointmentView().getTitleField().getText();
+				controller.getCalendar().editAppointment(appointment,time, detail, title,titleOld);
+				JOptionPane.showMessageDialog(null, "Edit Complete");
 				controller.getFillAppointmentView().disappear();
 				controller.getAppointView().updateUI();
 			}
@@ -140,8 +144,8 @@ public class FillAppointmentView {
 		frame.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		btnOK = new JButton("OK");
-		btnOK.addActionListener(new ActionListener() {
+		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (controller.getCalendar().isSameTitle(getTitleField().getText()))
 				{
@@ -155,11 +159,12 @@ public class FillAppointmentView {
 				{
 					controller.getCalendar().addAppointment(getDateField().getText(),getHoursComboBox().getSelectedItem()+":"+getMinutesComboBox().getSelectedItem(), getDetailField().getText(), getTitleField().getText());
 					disappear();
+					JOptionPane.showMessageDialog(null, "Save Complete");
 					controller.getAppointView().updateUI();
 				}
 			}
 		});
-		btnOK.setVerticalAlignment(SwingConstants.BOTTOM);
+		btnSave.setVerticalAlignment(SwingConstants.BOTTOM);
 		detailField = new JTextArea();
 		frame.getContentPane().add(detailField, BorderLayout.CENTER);
 	}
@@ -208,7 +213,7 @@ public class FillAppointmentView {
 	}
 	public JButton getBtnOK()
 	{
-		return this.btnOK;
+		return this.btnSave;
 	}
 	public void showEditBtn() {
 		// TODO Auto-generated method stub
@@ -225,5 +230,14 @@ public class FillAppointmentView {
 	public void addOKBtn()
 	{
 		this.getPanel().add(this.getBtnOK());
+	}
+
+	public void selectedButtonName(String title) {
+		// TODO Auto-generated method stub
+		this.buttonName = title;
+	}
+	public String getButtonName()
+	{
+		return this.buttonName;
 	}
 }

@@ -27,6 +27,25 @@ public class Calendar {
 	public void addAppointment(String date, String time,String detail, String title)
 	{
 		appointmentList.add(new Appointment(date,time, detail, title,this.controller));
+		if (this.controller.getDatabase()!=null)
+		{
+			this.controller.getDatabase().addDatabase(date, time, title, detail);
+		}
+		
+	}
+	public void editAppointment(Appointment appointment ,String time,String detail, String title,String titleOld)
+	{
+		appointment.setTime(time);
+		appointment.setDetail(detail);
+		appointment.setTitle(title);
+		this.controller.getDatabase().editDatabase(time, title, detail,titleOld);
+		
+	}
+	public void deleteAppointment(int index)
+	{
+		Appointment a = this.appointmentList.remove(index);
+		
+		this.controller.getDatabase().deleteDatabase(a.getTitle());
 	}
 	public ArrayList<Appointment> getAppointmentList()
 	{
@@ -44,4 +63,5 @@ public class Calendar {
 		}
 		return false;
 	}
+	
 }

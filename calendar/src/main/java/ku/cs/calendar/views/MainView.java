@@ -44,7 +44,10 @@ public class MainView {
 		this.controller = controller;
 		initialize();
 	}
-	
+	public JFrame getFrame()
+	{
+		return this.frame;
+	}
 	public void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 549, 406);

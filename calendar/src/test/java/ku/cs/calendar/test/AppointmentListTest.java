@@ -19,15 +19,12 @@ public class AppointmentListTest {
 		test.getCalendar().addAppointment(dateForm, "20:00", "my name is KU", "Introduction");
 		
 		assertEquals(1, test.getCalendar().getAppointmentList().size());
-		//add 4 appointment
-		test.getCalendar().addAppointment(dateForm, "20:00", "my name is KU", "Introduction");
-		test.getCalendar().addAppointment(dateForm, "20:00", "my name is KU", "Introduction");
-		test.getCalendar().addAppointment(dateForm, "20:00", "my name is KU", "Introduction");
-		test.getCalendar().addAppointment(dateForm, "20:00", "my name is KU", "Introduction");
-		assertEquals(5, test.getCalendar().getAppointmentList().size());
+		//add 1 appointment
+		test.getCalendar().addAppointment(dateForm, "20:00", "my name is KU", "Introduction2");
+		assertEquals(2, test.getCalendar().getAppointmentList().size());
 		//delete 1 appointment
 		test.getCalendar().getAppointmentList().remove(0);
-		assertEquals(4, test.getCalendar().getAppointmentList().size());
+		assertEquals(1, test.getCalendar().getAppointmentList().size());
 		
 		
 	}
