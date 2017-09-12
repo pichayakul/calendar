@@ -10,7 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import ku.cs.calendar.controllers.MainController;
-
+/*
+ * pichayakul jenpoomjai 5810450903 sec200
+ */
 public class Database {
 
 	Connection con;
@@ -70,12 +72,12 @@ public class Database {
 			this.closeConnection();
 		}
 	}
-	public void editDatabase(String time , String title ,String detail,String titleOld)
+	public void editDatabase(String time , String title ,String detail,String type,String titleOld)
 	{
 		try {
 			this.openConnection();
 			preparedStatement = con.prepareStatement("UPDATE appointment" + " SET time = '"+time+"', detail= '"+detail+ 
-					"',title = '"+title+"' WHERE title = '"+titleOld+"'");
+					"',title = '"+title+"',type='"+type+"' WHERE title = '"+titleOld+"'");
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 		}
@@ -87,14 +89,15 @@ public class Database {
 			this.closeConnection();
 		}
 	}
-	public void addDatabase(String date,String time , String title ,String detail) {
+	public void addDatabase(String date,String time , String title ,String type,String detail) {
 		try {
 			this.openConnection();
-			preparedStatement = con.prepareStatement("INSERT INTO appointment(date,time,title,detail) VALUES(?,?,?,?)");
+			preparedStatement = con.prepareStatement("INSERT INTO appointment(date,time,title,type,detail) VALUES(?,?,?,?,?)");
 			preparedStatement.setString(1, date);
 			preparedStatement.setString(2, time);
 			preparedStatement.setString(3, title);
-			preparedStatement.setString(4, detail);
+			preparedStatement.setString(4, type);
+			preparedStatement.setString(5, detail);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 			
@@ -121,8 +124,9 @@ public class Database {
 				String date = resultSet.getString(1);
 				String time = resultSet.getString(2);
 				String title = resultSet.getString(3);
-				String detail = resultSet.getString(4);
-				this.controller.getCalendar().addAppointment(date, time, detail, title);
+				String type = resultSet.getString(4);
+				String detail = resultSet.getString(5);
+				this.controller.getCalendar().addAppointment(date, time, detail,type, title);
 			}
 			statement.close();
 		} catch (SQLException e) {

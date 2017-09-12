@@ -17,7 +17,9 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/*
+ * pichayakul jenpoomjai 5810450903 sec200
+ */
 public class YesNoForm {
 
 	private JFrame frame;
@@ -51,6 +53,7 @@ public class YesNoForm {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				controller.getCalendar().deleteAppointment(getSelectedObjectIndex());
+				controller.getMainView().updateUI();
 				controller.getAppointView().updateUI();
 				hide();
 			}

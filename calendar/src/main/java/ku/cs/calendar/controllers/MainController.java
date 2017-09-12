@@ -6,16 +6,18 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ku.cs.calendar.models.Calendar;
+import ku.cs.calendar.models.CalendarModel;
 import ku.cs.calendar.models.Database;
 import ku.cs.calendar.views.AppointmentView;
 import ku.cs.calendar.views.FillAppointmentView;
 import ku.cs.calendar.views.MainView;
 import ku.cs.calendar.views.YesNoForm;
-
+/*
+ * pichayakul jenpoomjai 5810450903 sec200
+ */
 public class MainController {
 
-	public Calendar calendar;
+	public CalendarModel calendar;
 	public AppointmentView appointmentView;
 	public FillAppointmentView filAppointmentView;
 	public MainView view;
@@ -23,7 +25,7 @@ public class MainController {
 	public YesNoForm yesNoForm;
 	public void startApplication()
 	{
-		calendar = new Calendar(this);
+		calendar = new CalendarModel(this);
 		Date date = new Date();
 		database = new Database(this);
 //		calendar.addAppointment("01 Jan 2018","8:00", "hello my name is noel ", "Introduction", date.toString());
@@ -48,7 +50,7 @@ public class MainController {
 	{
 		return filAppointmentView;
 	}
-	public Calendar getCalendar()
+	public CalendarModel getCalendar()
 	{
 		return calendar;
 	}

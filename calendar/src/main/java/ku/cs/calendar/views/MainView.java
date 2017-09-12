@@ -28,10 +28,12 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+/*
+ * pichayakul jenpoomjai 5810450903 sec200
+ */
 public class MainView {
 
-	private JFrame frame;
+	private JFrame frmCalendar;
 	public JButton[] btnNewButtonList;
 	public JComboBox monthBox;
 	public JComboBox yearBox;
@@ -46,20 +48,22 @@ public class MainView {
 	}
 	public JFrame getFrame()
 	{
-		return this.frame;
+		return this.frmCalendar;
 	}
 	public void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 549, 406);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		frame.setResizable(false);
+		frmCalendar = new JFrame();
+		frmCalendar.setTitle("Calendar");
+		frmCalendar.setBounds(100, 100, 549, 406);
+		frmCalendar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCalendar.setVisible(true);
+		frmCalendar.setResizable(false);
 		
 		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.NORTH);
+		frmCalendar.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnNewButton = new JButton("Appointment List");
+		btnNewButton.setBackground(Color.ORANGE);
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			
@@ -81,13 +85,14 @@ public class MainView {
 		calenda = new GregorianCalendar(2017, 7, 1);
 		
 		int year = Integer.parseInt(date.toString().split(" ")[5])-5;
-		
-		months = new String[] {"January","February","March","April","May","June","July","August","September","October","November","December"};
 		years = new String[11];
 		for (int i=0;i<=10;i++)
 		{
 			years[i] = year+i+"";
 		}
+		
+		months = new String[] {"January","February","March","April","May","June","July","August","September","October","November","December"};
+		
 		monthBox = new JComboBox(months);
 		monthBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -106,7 +111,7 @@ public class MainView {
 		panel_2.add(yearBox);
 		
 		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1, BorderLayout.CENTER);
+		frmCalendar.getContentPane().add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new GridLayout(7, 7, 0, 0));
 		
 		JLabel lblNewLabel_1 = new JLabel("Sunday");
@@ -169,6 +174,10 @@ public class MainView {
 	{
 		return dayList;
 	}
+	public void markAppointment(JButton button)
+	{
+		button.setBackground(Color.RED);
+	}
 	public void updateUI()
 	{
 		calenda.set(Integer.parseInt(yearBox.getSelectedItem()+""), monthBox.getSelectedIndex(), 1);
@@ -195,6 +204,15 @@ public class MainView {
 			if (start)
 			{
 				btnNewButtonList[i].setText(day+"");
+				String date = day+" "+this.monthBox.getSelectedItem()+" "+this.getYearBox().getSelectedItem();
+				if (controller.getCalendar().canMarkDay(date))
+				{
+					btnNewButtonList[i].setBackground(Color.RED);
+				}
+				else
+				{
+					btnNewButtonList[i].setBackground(null);
+				}
 				btnNewButtonList[i].setEnabled(true);
 				day++;
 				if (day>maxDayMonth)
@@ -204,11 +222,21 @@ public class MainView {
 			}
 			else
 			{
+				btnNewButtonList[i].setBackground(null);
 				btnNewButtonList[i].setEnabled(false);
 				btnNewButtonList[i].setText("");
 			}
 			
 		}
+	}
+	
+	public JComboBox getYearBox()
+	{
+		return this.yearBox;
+	}
+	public JComboBox getMonthBox()
+	{
+		return this.monthBox;
 	}
 
 }

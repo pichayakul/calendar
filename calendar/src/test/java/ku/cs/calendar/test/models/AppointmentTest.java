@@ -11,7 +11,9 @@ import javax.swing.JOptionPane;
 import ku.cs.calendar.test.MainController;
 
 
-
+/*
+ * pichayakul jenpoomjai 5810450903 sec200
+ */
 public class AppointmentTest {
 
 	String date;
@@ -19,11 +21,14 @@ public class AppointmentTest {
 	String title;
 	String time;
 	Timer timer;
+	String type;
 	MainController controller;
 //	@SuppressWarnings("deprecation")
-	public AppointmentTest(String date,String time,String detail,String title,MainController controller) {
+	public AppointmentTest(String date,String time,String detail,String title,String type,MainController controller) {
 		this.date = date;
+		System.out.println(date);
 		this.time = time;
+		this.type = type;
 		this.detail = detail;
 		this.title = title;
 		this.timer = new Timer();
@@ -37,20 +42,40 @@ public class AppointmentTest {
 		appointmentTime.setYear(year-1900);
 		appointmentTime.setSeconds(0);
 //		System.out.println(appointmentTime);
-		timer.schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				JOptionPane.showMessageDialog(null, "Title : "+getTitle()+"\n"+"You have an appointment."+"\nDetail : \n    "+getDetail());
-			}
-		}, appointmentTime);
+//		timer.schedule(new TimerTask() {
+//			
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				JOptionPane.showMessageDialog(null, "You have an appointment.!!\n"+"Title : "+getTitle()+"\nDetail : \n    "+getDetail());
+//			}
+//		}, appointmentTime);
 	}
-	
+	public String getDay()
+	{
+		return this.date.split(" ")[0];
+	}
+	public String getMonth()
+	{
+		return this.date.split(" ")[1];
+	}
+	public String getYear()
+	{
+		return this.date.split(" ")[2];
+	}
+	public String getType() 
+	{
+		return this.type;
+	}
 	public String getTime()
 	{
 		return this.time;
 	}
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+	
 	public void setTime(String time)
 	{
 		this.time = time;

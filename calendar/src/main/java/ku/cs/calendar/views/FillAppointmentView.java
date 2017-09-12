@@ -29,10 +29,12 @@ import ku.cs.calendar.test.models.AppointmentTest;
 import javax.swing.JTextPane;
 import java.awt.Font;
 import javax.swing.JComboBox;
-
+/*
+ * pichayakul jenpoomjai 5810450903 sec200
+ */
 public class FillAppointmentView {
 
-	private JFrame frame;
+	private JFrame frmInformation;
 	public JTextArea detailField;
 	private JTextField dateField;
 	public MainController controller;
@@ -42,22 +44,27 @@ public class FillAppointmentView {
 	public JButton btnSave;
 	public JComboBox hoursComboBox;
 	public JComboBox minutesComboBox;
+	public JComboBox typeComboBox;
 	public String buttonName;
 	public FillAppointmentView(MainController controller) {
 		this.controller = controller;
 		initialize();
 	}
 
+	public JComboBox getTypeField() {
+		return this.typeComboBox;
+	}
 	private void initialize() {
 		Date date =new Date();
-		frame = new JFrame();
-		frame.setBounds(700, 100, 400, 400);
+		frmInformation = new JFrame();
+		frmInformation.setTitle("Information");
+		frmInformation.setBounds(700, 100, 400, 400);
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		frame.setVisible(false);
-		frame.setResizable(false);
+		frmInformation.getContentPane().setLayout(new BorderLayout(0, 0));
+		frmInformation.setVisible(false);
+		frmInformation.setResizable(false);
 		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1, BorderLayout.NORTH);
+		frmInformation.getContentPane().add(panel_1, BorderLayout.NORTH);
 		panel_1.setLayout(new GridLayout(3, 1, 0, 0));
 		btnEdit = new JButton("Edit");
 		btnEdit.addActionListener(new ActionListener() {
@@ -79,7 +86,8 @@ public class FillAppointmentView {
 				String time =hours+":"+minutes;
 				String titleOld = getButtonName();
 				String title = controller.getFillAppointmentView().getTitleField().getText();
-				controller.getCalendar().editAppointment(appointment,time, detail, title,titleOld);
+				String type = controller.getFillAppointmentView().getTypeField().getSelectedItem()+"";
+				controller.getCalendar().editAppointment(appointment,time, detail, title,type,titleOld);
 				JOptionPane.showMessageDialog(null, "Edit Complete");
 				controller.getFillAppointmentView().disappear();
 				controller.getAppointView().updateUI();
@@ -134,6 +142,10 @@ public class FillAppointmentView {
 		panel_5.add(titleField);
 		titleField.setColumns(10);
 		
+		String[] typeList = new String[] {"Normal","Daily","Weekly","Monthly"};
+		typeComboBox = new JComboBox(typeList);
+		panel_5.add(typeComboBox);
+		
 		JPanel panel_6 = new JPanel();
 		panel_1.add(panel_6);
 		
@@ -141,7 +153,7 @@ public class FillAppointmentView {
 		panel_6.add(lblDetail);
 		
 		panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+		frmInformation.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		btnSave = new JButton("Save");
@@ -157,20 +169,21 @@ public class FillAppointmentView {
 				}
 				else
 				{
-					controller.getCalendar().addAppointment(getDateField().getText(),getHoursComboBox().getSelectedItem()+":"+getMinutesComboBox().getSelectedItem(), getDetailField().getText(), getTitleField().getText());
+					controller.getCalendar().addAppointment(getDateField().getText(),getHoursComboBox().getSelectedItem()+":"+getMinutesComboBox().getSelectedItem(), getDetailField().getText(),getTypeField().getSelectedItem()+"", getTitleField().getText());
 					disappear();
 					JOptionPane.showMessageDialog(null, "Save Complete");
-					controller.getAppointView().updateUI();
+//					controller.getCalendar().matchAppointment("","");
+					controller.getMainView().updateUI();
 				}
 			}
 		});
 		btnSave.setVerticalAlignment(SwingConstants.BOTTOM);
 		detailField = new JTextArea();
-		frame.getContentPane().add(detailField, BorderLayout.CENTER);
+		frmInformation.getContentPane().add(detailField, BorderLayout.CENTER);
 	}
 	public void disappear() {
 		// TODO Auto-generated method stub
-		frame.setVisible(false);
+		frmInformation.setVisible(false);
 	}
 
 	public JPanel getPanel() {
@@ -205,7 +218,7 @@ public class FillAppointmentView {
 
 	public void display() {
 		// TODO Auto-generated method stub
-		frame.setVisible(true);
+		frmInformation.setVisible(true);
 	}
 	public JButton getBtnEdit()
 	{
